@@ -2,7 +2,6 @@
   <button
     class="banner"
     type="button"
-    @click="isModalVisible = true"
   >
     <div
       class="banner__content"
@@ -45,26 +44,14 @@
       </div>
     </div>
   </button>
-
-  <modal
-    :is-visible="isModalVisible"
-    @hide="isModalVisible = false"
-  />
 </template>
 
 <script lang="ts" setup>
-import {
-  ref,
-} from 'vue';
-import Modal from '@/component/modal/modal.vue';
-
 withDefaults(defineProps<{
   isWide?: boolean;
 }>(), {
   isWide: false,
 });
-
-const isModalVisible = ref(false);
 </script>
 
 <style lang="scss" scoped>
