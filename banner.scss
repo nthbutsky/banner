@@ -1,0 +1,210 @@
+@use "@/style/mixin/media.scss";
+@use "@/style/constant/spacer.scss";
+@use "@/style/constant/color-semantic.scss";
+@use "@/style/constant/typography.scss";
+@use "@/style/constant/border.scss";
+@use "@/style/constant/shadow.scss";
+@use "@/style/constant/transition.scss";
+
+$banner-max-width: 1200px;
+
+$banner-height-desktop: 78px;
+$banner-height-laptop: 93px;
+$banner-height-tablet: 126px;
+$banner-height-mobile: 147px;
+
+$image-left-desktop-size: 264px;
+$image-left-laptop-size: 140px;
+
+$image-right-desktop-size: 144px;
+$image-right-laptop-size: 144px;
+$image-right-tablet-size: 180px;
+$image-right-mobile-size: 80px;
+
+$logo-width-large: 72px;
+$logo-width-small: 60px;
+
+$bubble-color: #5e8ed6;
+$bubble-size: 60px;
+$bubble-width-large: 136px;
+$bubble-width-small: 54px;
+
+@mixin banner-layout($min-height, $grid-template-areas, $grid-template-columns) {
+  min-height: $min-height;
+  grid-template-areas: $grid-template-areas;
+  grid-template-columns: $grid-template-columns;
+}
+
+.banner {
+  display: block;
+  width: 100%;
+  text-align: unset;
+}
+
+.banner__content {
+  position: relative;
+  height: fit-content;
+  max-width: $banner-max-width;
+  background-color: color-semantic.$surface-soft-warm;
+  border: border.$width-default solid color-semantic.$line-subdued;
+  box-shadow: shadow.$shadow-200-light;
+  display: grid;
+  @include media.media(laptop, desktop, tv) {
+    @include banner-layout(
+      $banner-height-laptop,
+      "image-left info bubble image-right",
+      $image-left-laptop-size auto $bubble-width-large $image-right-laptop-size
+    );
+  }
+  @include media.media(tablet) {
+    @include banner-layout(
+      $banner-height-tablet,
+      "info bubble image-right",
+      auto $bubble-width-small $image-right-tablet-size
+    );
+  }
+  @include media.media(mobile) {
+    @include banner-layout(
+      $banner-height-mobile,
+      "info bubble image-right",
+      auto $bubble-width-small $image-right-mobile-size
+    );
+  }
+}
+
+.banner__content_wide {
+  @include media.media(laptop) {
+    @include banner-layout(
+      $banner-height-laptop,
+      "image-left info bubble image-right",
+      $image-left-laptop-size auto $bubble-width-large $image-right-laptop-size
+    );
+  }
+  @include media.media(desktop, tv) {
+    @include banner-layout(
+      $banner-height-desktop,
+      "image-left info bubble image-right",
+      $image-left-desktop-size auto $bubble-width-large $image-right-desktop-size
+    );
+  }
+}
+
+.banner__image {
+  height: 100%;
+  background-image: url("@/asset/image/banner.jpg");
+}
+
+.banner__image_left {
+  grid-area: image-left;
+  @include media.media(laptop, desktop, tv) {
+    background-size: auto 255%;
+    background-position: 85% 5%;
+  }
+  @include media.media(tablet, mobile) {
+    display: none;
+  }
+}
+
+.banner__image_left-wide {
+  @include media.media(laptop) {
+    background-size: auto 255%;
+    background-position: 85% 5%;
+  }
+  @include media.media(desktop, tv) {
+    background-size: auto 255%;
+    background-position: center top;
+  }
+}
+
+.banner__image_right {
+  grid-area: image-right;
+  @include media.media(laptop, desktop, tv) {
+    background-size: auto 255%;
+    background-position: 93% 84%;
+  }
+  @include media.media(tablet) {
+    background-size: auto 100%;
+    background-position: center;
+  }
+  @include media.media(mobile) {
+    background-size: auto 100%;
+    background-position: 88%;
+  }
+}
+
+.banner__image_right-wide {
+  @include media.media(laptop) {
+    background-size: auto 255%;
+    background-position: 93% 84%;
+  }
+  @include media.media(desktop, tv) {
+    background-size: auto 255%;
+    background-position: right 85%;
+  }
+}
+
+.banner__info {
+  grid-area: info;
+  padding-top: spacer.$spacer-40;
+  padding-right: spacer.$spacer-60;
+  padding-bottom: spacer.$spacer-40;
+  padding-left: spacer.$spacer-60;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: spacer.$spacer-15;
+  @include media.media(tablet, mobile) {
+    padding-top: spacer.$spacer-200;
+    padding-bottom: spacer.$spacer-100;
+    gap: spacer.$spacer-40;
+    justify-content: flex-start;
+  }
+}
+
+.banner__headline {
+  color: color-semantic.$text-primary;
+  @include typography.headline-3;
+  @include media.media(tablet, mobile) {
+    @include typography.body-large-tight;
+  }
+}
+
+.banner__cta {
+  text-decoration: underline;
+  color: color-semantic.$text-primary;
+  @include typography.body-small;
+}
+
+.banner__bubble {
+  grid-area: bubble;
+  height: $bubble-size;
+  width: $bubble-size;
+  display: flex;
+  align-items: center;
+  text-align: center;
+  margin-top: auto;
+  margin-bottom: auto;
+  border-radius: 50%;
+  background-color: $bubble-color;
+  transform: rotate(10deg);
+  color: color-semantic.$text-inverted;
+  font-weight: typography.$font-weight-bold;
+  @include typography.body-tiny-tight;
+}
+
+.banner__logo {
+  grid-area: image-right;
+  display: block;
+  width: $logo-width-large;
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translate(-50%, -50%);
+  @include media.media(tablet, mobile) {
+    grid-area: info;
+    width: $logo-width-small;
+    top: spacer.$spacer-60;
+    left: spacer.$spacer-60;
+    transform: translate(0, 0);
+  }
+}
